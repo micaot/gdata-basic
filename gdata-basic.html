@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html >
+  <head>
+	<meta charset="UTF-8">
+    <title>GData - Ejemplo Básico</title>
+  </head>
+  <body>
+		<h3>Obtiene los datos de una hoja de cálculo pública de Google (<a href="https://docs.google.com/spreadsheets/d/1nMnLy8I22Bv2-nuq45qUxkw0EuIDGlFPhYPileE5H40/edit?usp=sharing" target="_blank">ver la hoja</a>)</h3>
+        
+        <script type="text/javascript">
+        function listEntries(json) {
+          var div = document.createElement('div');
+          for (var i = 0; i < json.feed.entry.length; i++) {
+            var entry = json.feed.entry[i];
+            var p = document.createElement('p');
+            var tupla = entry.gsx$nombre.$t + " " + entry.gsx$apellidos.$t + " " + entry.gsx$telefono.$t;
+            var show_tupla = document.createTextNode(tupla);
+            p.appendChild(show_tupla);
+            div.appendChild(p);
+          }
+          document.getElementById('data').appendChild(div);
+        }
+        
+        function displayResults(query) {
+          var script = document.createElement('script');
+          script.setAttribute('src', '//spreadsheets.google.com/feeds/list/1nMnLy8I22Bv2-nuq45qUxkw0EuIDGlFPhYPileE5H40/od6/public/values?alt=json-in-script&callback=listEntries');
+          script.setAttribute('id', 'jsonScript');
+          script.setAttribute('type', 'text/javascript');
+          document.documentElement.firstChild.appendChild(script);
+        }
+        </script>
+        
+        <form onsubmit="return false">
+            <button id='ok_button' onclick="displayResults(this.form);">Mostrar Resultados</button>
+        </form>
+        
+        <div id="data"></div>
+        <div class="results"></div>
+	</body>
+</html>
